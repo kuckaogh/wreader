@@ -1,5 +1,5 @@
-antlr4.antlrRegisteredTools=4.2.2@Z\:\\Temp\\antlr-4.2.2-complete.jar\:4.4@D\:\\cvwrsm\\trunk\\wreader\\lib\\antlr-4.4-complete.jar
-antlr4.antlrToolPath=D\:\\cvwrsm\\trunk\\wreader\\lib\\antlr-4.4-complete.jar
+antlr4.antlrRegisteredTools=4.4@Z\:\\Temp\\antlr-4.4-complete.jar\:4.5@D\:\\cvwrsm\\git\\wreader\\lib\\antlr-4.5-complete.jar
+antlr4.antlrToolPath=D\:\\cvwrsm\\git\\wreader\\lib\\antlr-4.5-complete.jar
 antlr4.encoding=UTF-8
 antlr4.listener=true
 antlr4.visitor=false

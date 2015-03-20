@@ -21,7 +21,7 @@ public class CplexLpReader {
 
 		public static void main(String[] args) throws IOException {
 
-			String fp="D:\\cvwrsm\\trunk\\wreader\\src\\lpreader\\grammar\\t.lp";
+			String fp=".\\src\\lpreader\\grammar\\t.lp";
 			ANTLRInputStream input = new ANTLRFileStream(fp);
 			CplexLpLexer lexer = new CplexLpLexer(input);
 			CommonTokenStream tokens = new CommonTokenStream(lexer);
