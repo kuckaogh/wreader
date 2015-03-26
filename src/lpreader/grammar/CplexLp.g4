@@ -1,7 +1,5 @@
-
 grammar CplexLp;
 @header {
-package lpreader.grammar;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -30,7 +28,7 @@ expr: ('-'|'+') expr
     |   INT
     |   FLOAT
     |   Inf
-    | term
+    | term {System.out.println("hello!\n");}
     ;
 
 term : number ID ;
