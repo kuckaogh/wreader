@@ -15,11 +15,19 @@ import java.util.Set;
 	
 }
 
-study: seq model EOF;
+study: initial? seq+ (group|model)+ EOF;
 
-seq: SEQ ID '{' MODEL ID ORDER INT '}' ;
+initial: INITIAL '{' sv+ '}' ;
 
-model: MODEL ID '{' (define | goal | obj )+ '}' ;
+seq: SEQ ID '{' MODEL ID condition? ORDER INT '}' ;
+
+model: MODEL ID '{' item+ '}' ;
+
+group: GROUP ID '{' item+ '}' ;
+
+include: INCLUDE ('[' LOCAL ']')? ( QUOTE | (GROUP ID) ) ;
+
+item: define | goal | obj | include ;
 
 obj : OBJECTIVE ID '=' '{' weight+ '}' ;
 
@@ -27,11 +35,20 @@ weight : '[' ID ',' number ']' ;
 
 goal : GOAL ID '{' constraint '}' ;
 
-define: dv | sv ;
+define: dv | sv | alias ;
 
-sv : DEFINE ID '{' VALUE number '}';
+alias : DEFINE ID '{' ALIAS ID KIND QUOTE UNITS QUOTE '}' ;
 
-dv: DEFINE ID '{' (LOWER dvbound)? (UPPER dvbound)? STD? KIND QUOTE UNITS QUOTE '}';
+sv : ( SVAR | DEFINE ) ID '{' VALUE number '}';
+
+dv : DEFINE ID '{' (LOWER dvbound)? (UPPER dvbound)? STD? KIND QUOTE UNITS QUOTE '}';
+
+condition : CONDITION logical;
+
+logical : logical (OR|AND) logical 
+		| expr ('>'|'<'|'=='|'>='|'<=') expr
+        | '(' logical ')'   
+		;
 
 constraint : expr ('>'|'<'|'=') expr ; 
 
@@ -53,12 +70,14 @@ number :
         ( INT | FLOAT )
        ;
 
+MULTI_LINE_COMMENT : '/*' .*? '*/' -> skip ; 
+
 LINE_COMMENT
     :   '!' ~[\r\n]* -> skip
     ;
 
 
-QUOTE : '\'' (Letter|Digit|'_'|'-')+ '\'' ;
+QUOTE : '\'' (Letter|Digit|'_'|'-'|'.'|'\\')+ '\'' ;
 
 // Keywords
 OBJECTIVE : 'OBJECTIVE' | 'Objective' | 'objective' ;
@@ -74,7 +93,30 @@ SEQ : 'SEQUENCE' | 'Sequence' | 'sequence' ;
 MODEL : 'MODEL' | 'Model' | 'model' ;
 ORDER : 'ORDER' | 'Order' | 'order' ;
 DEFINE : 'DEFINE' | 'Define' | 'define' ;
+INITIAL : 'INITIAL' | 'Initial' | 'initial' ;
+SVAR : 'SVAR' | 'Svar' | 'svar' ;
+CONDITION : 'CONDITION' | 'Condition' | 'condition' ;
+OR : '.OR.' | '.Or.' | '.or.' ;
+AND: '.AND.' | '.And.' | '.and.';
+GROUP : 'GROUP' | 'Group' | 'group' ;
+INCLUDE : 'INCLUDE' | 'Include' | 'include' ;
+ALIAS : 'ALIAS' | 'Alias' | 'alias' ;
+LOCAL : 'LOCAL' | 'Local' | 'local' ;
 
+//// Time
+//MONTH:'MONTH'|'Month'|'month';
+//JAN:'JAN';
+//FEB:'FEB';
+//MAR:'MAR';
+//APR:'APR';
+//MAY:'MAY';
+//JUN:'JUN';
+//JUL:'JUL';
+//AUG:'AUG';
+//SEP:'SEP';
+//OCT:'OCT';
+//NOV:'NOV';
+//DEC:'DEC';
 
 INT :   Digit+  ;
 
